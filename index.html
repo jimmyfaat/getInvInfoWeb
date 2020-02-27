@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Page Title</title>
+        
+        <script src="./js/pdfjs.2.2.228/pdf.js"></script>
+        <script src="./js/tesseract.2.0.2/tesseract.min.js"></script>
+    <script src="./js/main.js"></script>
+    </head>
+    <body>
+        <div class="instruction" *ngIf="isReady">
+            <div >Drop PDF file into this window. Or <span class="btn openFile" onClick="openFiles()">Open Files</span>.</div>
+        </div>
+<h1>'Hello, world!' example</h1>
+
+<canvas id="the-canvas" style="border: 1px solid black; direction: ltr;"></canvas>
+        
+    </body>
+</html>
