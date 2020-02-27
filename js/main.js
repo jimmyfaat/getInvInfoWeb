@@ -3,21 +3,13 @@ const { createWorker } = require('tesseract.js');
 const path = require('path');
 */
 
-/*const tsWorker = Tesseract.createWorker({
-    langPath: '.js/tesseract.2.0.0-alpha.2/tessdata',
-    cachePath: '.js/tesseract.2.0.0-alpha.2/tessdata',
-});*/
 console.log(Tesseract);
 const tsWorker = Tesseract.createWorker({
-    workerPath: "file:///C:/Users/jimmyfaat/Desktop/projects/getInvInfoWeb/js/tesseract.2.0.2/worker.min.js", //tesseract.js-1.0.10
-    langPath: "file:///C:/Users/jimmyfaat/Desktop/projects/getInvInfoWeb/js/tesseract.2.0.2/tessdata/",
+    workerPath: "./js/tesseract.2.0.2/worker.min.js",
+    langPath: "./js/tesseract.2.0.2/tessdata/",
     //corePath: window.location.origin + "/js/tesseract.2.0.0-alpha.2/tessdata/", //tesseract.js-core-0.1.0
  });
 
-/*Tesseract.workerOptions.langPath = 
-           window.location.origin // take protocol://domain.com part
-           + "/js/tesseract.2.0.0-alpha.2/tessdata/"; // location of data files
-*/
 tsWorker.load()
 .then(()=>tsWorker.loadLanguage('eng'))
 .then(()=>tsWorker.initialize('eng'))
