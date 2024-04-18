@@ -1,4 +1,3 @@
-202404181014
 @angular-devkit/build-angular
 MIT
 The MIT License
