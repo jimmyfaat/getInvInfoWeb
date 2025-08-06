@@ -30,7 +30,7 @@ webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
 /*! exports provided: name, version, scripts, private, dependencies, devDependencies, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"name\":\"get-inv-info-web-dev\",\"version\":\"1.3.6\",\"scripts\":{\"ng\":\"ng\",\"start\":\"ng serve\",\"buildProd\":\"ng build --prod\",\"buildGithub\":\"ng build --base-href getInvInfoWeb\",\"test\":\"ng test\",\"lint\":\"ng lint\",\"e2e\":\"ng e2e\"},\"private\":true,\"dependencies\":{\"@angular/animations\":\"~9.0.4\",\"@angular/common\":\"~9.0.4\",\"@angular/compiler\":\"~9.0.4\",\"@angular/core\":\"~9.0.4\",\"@angular/forms\":\"~9.0.4\",\"@angular/platform-browser\":\"~9.0.4\",\"@angular/platform-browser-dynamic\":\"~9.0.4\",\"@angular/router\":\"~9.0.4\",\"@zxing/library\":\"^0.15.2\",\"file-saver\":\"^2.0.2\",\"javascript-barcode-reader\":\"^0.6.8\",\"ng2-pdf-viewer\":\"^6.1.2\",\"pdfjs-dist\":\"^2.2.228\",\"rxjs\":\"~6.5.4\",\"tesseract.js\":\"^2.0.2\",\"tslib\":\"^1.10.0\",\"xlsx-js-style\":\"^1.2.0\",\"zone.js\":\"~0.10.2\"},\"devDependencies\":{\"@angular-devkit/build-angular\":\"~0.900.4\",\"@angular/cli\":\"~9.0.4\",\"@angular/compiler-cli\":\"~9.0.4\",\"@angular/language-service\":\"~9.0.4\",\"@types/jasmine\":\"~3.3.8\",\"@types/jasminewd2\":\"~2.0.3\",\"@types/node\":\"^12.11.1\",\"@types/tesseract.js\":\"0.0.2\",\"codelyzer\":\"^5.1.2\",\"jasmine-core\":\"~3.4.0\",\"jasmine-spec-reporter\":\"~4.2.1\",\"karma\":\"~4.1.0\",\"karma-chrome-launcher\":\"~2.2.0\",\"karma-coverage-istanbul-reporter\":\"~2.0.1\",\"karma-jasmine\":\"~2.0.1\",\"karma-jasmine-html-reporter\":\"^1.4.0\",\"protractor\":\"~5.4.0\",\"ts-node\":\"~7.0.0\",\"tslint\":\"~5.15.0\",\"typescript\":\"~3.7.5\"}}");
+module.exports = JSON.parse("{\"name\":\"get-inv-info-web-dev\",\"version\":\"1.3.7\",\"scripts\":{\"ng\":\"ng\",\"start\":\"ng serve\",\"buildProd\":\"ng build --prod\",\"buildGithub\":\"ng build --base-href getInvInfoWeb\",\"test\":\"ng test\",\"lint\":\"ng lint\",\"e2e\":\"ng e2e\"},\"private\":true,\"dependencies\":{\"@angular/animations\":\"~9.0.4\",\"@angular/common\":\"~9.0.4\",\"@angular/compiler\":\"~9.0.4\",\"@angular/core\":\"~9.0.4\",\"@angular/forms\":\"~9.0.4\",\"@angular/platform-browser\":\"~9.0.4\",\"@angular/platform-browser-dynamic\":\"~9.0.4\",\"@angular/router\":\"~9.0.4\",\"@zxing/library\":\"^0.15.2\",\"file-saver\":\"^2.0.2\",\"javascript-barcode-reader\":\"^0.6.8\",\"ng2-pdf-viewer\":\"^6.1.2\",\"pdfjs-dist\":\"^2.2.228\",\"rxjs\":\"~6.5.4\",\"tesseract.js\":\"^2.0.2\",\"tslib\":\"^1.10.0\",\"xlsx-js-style\":\"^1.2.0\",\"zone.js\":\"~0.10.2\"},\"devDependencies\":{\"@angular-devkit/build-angular\":\"~0.900.4\",\"@angular/cli\":\"~9.0.4\",\"@angular/compiler-cli\":\"~9.0.4\",\"@angular/language-service\":\"~9.0.4\",\"@types/jasmine\":\"~3.3.8\",\"@types/jasminewd2\":\"~2.0.3\",\"@types/node\":\"^12.11.1\",\"@types/tesseract.js\":\"0.0.2\",\"codelyzer\":\"^5.1.2\",\"jasmine-core\":\"~3.4.0\",\"jasmine-spec-reporter\":\"~4.2.1\",\"karma\":\"~4.1.0\",\"karma-chrome-launcher\":\"~2.2.0\",\"karma-coverage-istanbul-reporter\":\"~2.0.1\",\"karma-jasmine\":\"~2.0.1\",\"karma-jasmine-html-reporter\":\"^1.4.0\",\"protractor\":\"~5.4.0\",\"ts-node\":\"~7.0.0\",\"tslint\":\"~5.15.0\",\"typescript\":\"~3.7.5\"}}");
 
 /***/ }),
 
@@ -192,7 +192,7 @@ var AppComponent = /** @class */ (function () {
         })();
         this.lastExcel = null;
         this.tessWorker = tesseract_js__WEBPACK_IMPORTED_MODULE_4__["createWorker"]({
-            //gzip: false,
+            // gzip: false,
             workerPath: "./assets/tesseract.worker.min.js",
             corePath: "./assets/tesseract-core.wasm.js",
             langPath: "./assets/tesseractLang",
@@ -209,6 +209,8 @@ var AppComponent = /** @class */ (function () {
         // Check if need to delete browser indexedDb or not.
         var delDbKey = 1583513841733;
         var delDbCheck = localStorage.getItem('delDb' + delDbKey);
+        // 如用Train model，需重新load
+        // if (!delDbCheck || true) {
         if (!delDbCheck) {
             var delDbReq = indexedDB.deleteDatabase('keyval-store');
             delDbReq.onsuccess = function () {
@@ -247,8 +249,12 @@ var AppComponent = /** @class */ (function () {
         return this.tessWorker.load()
             //.then(ConfigResult=>this.tessWorker.loadLanguage('chi_tra'))
             //.then(()=>this.tessWorker.initialize('chi_tra'));
+            // 正常用
             .then(function (ConfigResult) { return _this.tessWorker.loadLanguage('eng'); })
             .then(function () { return _this.tessWorker.initialize('eng'); });
+        // 自家Train model用
+        // .then(ConfigResult=>this.tessWorker.loadLanguage('num'))
+        // .then(()=>this.tessWorker.initialize('num'));
     };
     //---------------------------------------------------------------------------------------------
     AppComponent.prototype.loadPdfFiles = function (files) {
@@ -454,13 +460,13 @@ var AppComponent = /** @class */ (function () {
                 { processType: 'ocr', title: '離岸價格', pos: [850, 153, 121, 20], blackUnder: 127, charWhitelist: '0123456789', postFn: [num2d] },
                 { processType: 'ocr', title: '運費', pos: [850, 178, 121, 20], blackUnder: 127, charWhitelist: '0123456789', postFn: [num2d] },
                 { processType: 'ocr', title: '保險費', pos: [850, 211, 121, 20], blackUnder: 127, charWhitelist: '0123456789', postFn: [num2d] },
-                { processType: 'ocr', title: '起岸價格', pos: [850, 289, 121, 20], blackUnder: 127, charWhitelist: '0123456789', postFn: [num2d] },
-                { processType: 'ocr', title: '進口稅', pos: [854, 988, 121, 20], blackUnder: 127, charWhitelist: '0123456789', isInBottomTable: true },
-                { processType: 'ocr', title: '營業稅', pos: [858, 1112, 121, 20], blackUnder: 127, charWhitelist: '0123456789', isInBottomTable: true },
+                { processType: 'ocr', title: '起岸價格', pos: [850, 289, 118, 20], blackUnder: 127, charWhitelist: '0123456789', postFn: [num2d] },
+                { processType: 'ocr', title: '進口稅', pos: [854, 986, 118, 20], blackUnder: 127, charWhitelist: '0123456789', isInBottomTable: true },
+                { processType: 'ocr', title: '營業稅', pos: [858, 1110, 118, 20], blackUnder: 127, charWhitelist: '0123456789', isInBottomTable: true },
                 { processType: 'ocr', title: '匯率', pos: [890, 110, 80, 20], blackUnder: 127, charWhitelist: '0123456789.', },
                 { processType: 'ocr', title: '應加費用', pos: [850, 242, 121, 20], blackUnder: 127, charWhitelist: '0123456789', postFn: [num2d] },
                 { processType: 'ocr', title: '應減費用', pos: [850, 266, 121, 20], blackUnder: 127, charWhitelist: '0123456789', postFn: [num2d] },
-                { processType: 'ocr', title: '推廣貿易服務費', pos: [853, 1013, 121, 20], blackUnder: 127, charWhitelist: '0123456789', isInBottomTable: true },
+                { processType: 'ocr', title: '推廣貿易服務費', pos: [853, 1011, 121, 20], blackUnder: 127, charWhitelist: '0123456789', isInBottomTable: true },
             ];
             var bottomTableOffsetTop = _this.getBottomTableOffsetTop(canvas);
             if (bottomTableOffsetTop)
@@ -499,8 +505,10 @@ var AppComponent = /** @class */ (function () {
                     cropCanvas2D.putImageData(imageDataObj, 0, 0);
                 }*/
                 var image = cropCanvas.toDataURL("image/png");
-                if (!src_environments_environment__WEBPACK_IMPORTED_MODULE_8__["environment"].production)
-                    console.log('%c ', "background-repeat: no-repeat; padding: 10px 200px; background-image: url(" + image + ")");
+                if (!src_environments_environment__WEBPACK_IMPORTED_MODULE_8__["environment"].production) {
+                    console.log('%c ', "background-repeat: no-repeat; padding: " + height / 2 + "px " + width / 2 + "px; background-image: url(" + image + ")");
+                    console.log(image);
+                }
                 _this.tessWorker.setParameters({
                     tessedit_pageseg_mode: "7" /* SINGLE_LINE */,
                     tessedit_char_whitelist: config.charWhitelist,
@@ -526,6 +534,8 @@ var AppComponent = /** @class */ (function () {
                             finally { if (e_1) throw e_1.error; }
                         }
                     regResult = regResult.trim();
+                    // 將reResult的空格去掉
+                    regResult = regResult.replace(/ /g, '');
                     if (!src_environments_environment__WEBPACK_IMPORTED_MODULE_8__["environment"].production)
                         console.log(config.title + ": " + regResult);
                     if (!regResult && trial < 2) {
